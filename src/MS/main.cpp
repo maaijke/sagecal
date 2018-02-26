@@ -445,7 +445,7 @@ main(int argc, char **argv) {
     }
 
 
-    time_t start_time, end_time;
+    clock_t start_time, end_time;
     double elapsed_time;
 
     int tilex=0;
@@ -468,7 +468,7 @@ main(int argc, char **argv) {
     double inv_c=1.0/CONST_C;
 
     while (msitr[0]->more()) {
-      start_time = time(0);
+      start_time = clock();
       if (iodata.Nms==1) {
        if (!doBeam) {
         Data::loadData(msitr[0]->table(),iodata,&iodata.fratio);
@@ -766,8 +766,9 @@ beam.p_ra0,beam.p_dec0,iodata.freq0,beam.sx,beam.sy,beam.time_utc,beam.Nelem,bea
     res_prev=res_1;
    }
    }
-    end_time = time(0);
-    elapsed_time = ((double) (end_time-start_time)) / 60.0;
+    end_time = clock();
+    // elapsed_time = ((double) (end_time-start_time)) / 60.0;
+    elapsed_time = (double)(end_time-start_time) / CLOCKS_PER_SEC;;
     if (!Data::DoSim) {
     if (solver_mode==SM_OSLM_OSRLM_RLBFGS||solver_mode==SM_RLM_RLBFGS||solver_mode==SM_RTR_OSRLM_RLBFGS || solver_mode==SM_NSD_RLBFGS) { 
     cout<<"nu="<<mean_nu<<endl;
