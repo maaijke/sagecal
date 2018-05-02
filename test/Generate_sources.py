@@ -19,43 +19,43 @@ except AssertionError:
     print("Sorry, number of sources too large, reset to {0}".format(number_of_sources))
 
 
-# Best to center sources around 3C196 if using the sm.ms measurement set with a 
+# Best to center sources around NCP if using the sm.ms measurement set with a 
 # four degree tolerance
 tol_seconds_of_decl = 3600 * 10 
 tol_seconds_of_RA = tol_seconds_of_decl * 24/360
 
-# I'll pretend 3C196 is at RA=0, decl=90 for now, to accommodate for a MS that I am using.
-RA_hours_3C196 = 0
-RA_minutes_3C196 = 0
-RA_seconds_3C196 = 0
-#RA_hours_3C196 = 8
-#RA_minutes_3C196 = 13
-#RA_seconds_3C196 = 35.981540
+# I'll pretend NCP is at RA=0, decl=90 for now, to accommodate for a MS that I am using.
+RA_hours_NCP = 0
+RA_minutes_NCP = 0
+RA_seconds_NCP = 0
+#RA_hours_NCP = 8
+#RA_minutes_NCP = 13
+#RA_seconds_NCP = 35.981540
 
-RA_seconds_3C196 = (RA_hours_3C196 * 60 + RA_minutes_3C196) *60 + RA_seconds_3C196
+RA_seconds_NCP = (RA_hours_NCP * 60 + RA_minutes_NCP) *60 + RA_seconds_NCP
 
-RA_seconds_low = RA_seconds_3C196 - tol_seconds_of_RA
+RA_seconds_low = RA_seconds_NCP - tol_seconds_of_RA
 RA_minutes_low, RA_seconds_low = divmod(RA_seconds_low, 60)
 RA_hours_low, RA_minutes_low = divmod(RA_minutes_low, 60)
 
-RA_seconds_high = RA_seconds_3C196 + tol_seconds_of_RA
+RA_seconds_high = RA_seconds_NCP + tol_seconds_of_RA
 RA_minutes_high, RA_seconds_high = divmod(RA_seconds_high, 60)
 RA_hours_high, RA_minutes_high = divmod(RA_minutes_high, 60)
 
-decl_degrees_3C196 = 90
-decl_minutes_3C196 = 0
-decl_seconds_3C196 = 0
-#decl_degrees_3C196 = 48
-#decl_minutes_3C196 = 12
-#decl_seconds_3C196 = 59.174770
+decl_degrees_NCP = 90
+decl_minutes_NCP = 0
+decl_seconds_NCP = 0
+#decl_degrees_NCP = 48
+#decl_minutes_NCP = 12
+#decl_seconds_NCP = 59.174770
 
-decl_seconds_3C196 = (decl_degrees_3C196 * 60 + decl_minutes_3C196) *60 + decl_seconds_3C196
+decl_seconds_NCP = (decl_degrees_NCP * 60 + decl_minutes_NCP) *60 + decl_seconds_NCP
 
-decl_seconds_low = decl_seconds_3C196 - tol_seconds_of_decl
+decl_seconds_low = decl_seconds_NCP - tol_seconds_of_decl
 decl_minutes_low, decl_seconds_low = divmod(decl_seconds_low, 60)
 decl_degrees_low, decl_minutes_low = divmod(decl_minutes_low, 60)
 
-decl_seconds_high = decl_seconds_3C196 + tol_seconds_of_decl
+decl_seconds_high = decl_seconds_NCP + tol_seconds_of_decl
 decl_minutes_high, decl_seconds_high = divmod(decl_seconds_high, 60)
 decl_degrees_high, decl_minutes_high = divmod(decl_minutes_high, 60)
 
@@ -128,7 +128,7 @@ with warnings.catch_warnings():
 
 # sources_parameters.tofile("extended_source_list_using_tofile.txt", sep='\n')
 
-with open("extended_source_list_centered_on_3C196.txt", 'wb') as f:
+with open("extended_source_list_centered_on_NCP.txt", 'wb') as f:
     f.write(b"##  From Generate_sources.py by Hanno Spreeuw.\n")
     f.write(b"##  Generates point sources at random positions with random brighnesses within some range.\n")
     f.write(b"##  this is an LSM text (hms/dms) file\n")
@@ -142,5 +142,5 @@ with open("extended_source_list_centered_on_3C196.txt", 'wb') as f:
 # Now write the cluster file
 # First add '1' and '1' to indicate the cluster id and chunk size.
 cluster_array = np.concatenate((np.array(['1', '1']), sources_parameters.name))
-with open("extended_source_list_centered_on_3C196.txt.cluster", 'wb') as f:
+with open("extended_source_list_centered_on_NCP.txt.cluster", 'wb') as f:
     np.savetxt(f, (cluster_array).reshape(1, cluster_array.shape[0]), fmt='%s', delimiter=' ')
