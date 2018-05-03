@@ -789,7 +789,7 @@ beam.p_ra0,beam.p_dec0,iodata.freq0,beam.sx,beam.sy,beam.time_utc,beam.Nelem,bea
    }
    }
     end_time = clock();
-    elapsed_time = (double) (end_time-start_time) / CLOCKS_PER_SEC;
+    elapsed_time = (double) (end_time-start_time) / (60.0 * CLOCKS_PER_SEC); // in minutes
     if (!Data::DoSim) {
     if (solver_mode==SM_OSLM_OSRLM_RLBFGS||solver_mode==SM_RLM_RLBFGS||solver_mode==SM_RTR_OSRLM_RLBFGS || solver_mode==SM_NSD_RLBFGS) { 
     cout<<"nu="<<mean_nu<<endl;
