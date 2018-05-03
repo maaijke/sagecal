@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <pthread.h>
+#include <sys/time.h>
 #include <casacore/casa/Quanta/Quantum.h>
 
 #include <Radio.h>
@@ -456,7 +457,7 @@ main(int argc, char **argv) {
     }
 
 
-    clock_t start_time, end_time;
+    struct timeval start_time, end_time;
     double elapsed_time;
 
     int tilex=0;
@@ -489,7 +490,7 @@ main(int argc, char **argv) {
 #endif
 
     while (msitr[0]->more()) {
-      start_time = clock();
+      gettimeofday(&start_time, NULL);
       if (iodata.Nms==1) {
        if (!doBeam) {
         Data::loadData(msitr[0]->table(),iodata,&iodata.fratio);
@@ -788,15 +789,16 @@ beam.p_ra0,beam.p_dec0,iodata.freq0,beam.sx,beam.sy,beam.time_utc,beam.Nelem,bea
     res_prev=res_1;
    }
    }
-    end_time = clock();
-    elapsed_time = (double) (end_time-start_time) / (60.0 * CLOCKS_PER_SEC); // in minutes
+    gettimeofday(&end_time, NULL);
+    elapsed_time = (double) (end_time.tv_usec - start_time.tv_usec) / 1000000 + 
+                   (double) (end_time.tv_sec - start_time.tv_sec); // in seconds with microsecond accuracy.
     if (!Data::DoSim) {
     if (solver_mode==SM_OSLM_OSRLM_RLBFGS||solver_mode==SM_RLM_RLBFGS||solver_mode==SM_RTR_OSRLM_RLBFGS || solver_mode==SM_NSD_RLBFGS) { 
     cout<<"nu="<<mean_nu<<endl;
     }
-      cout<<"Timeslot: "<<tilex<<" Residual: initial="<<res_0<<",final="<<res_1<<", Time spent="<<elapsed_time<<" minutes"<<endl;
+      cout<<"Timeslot: "<<tilex<<" Residual: initial="<<res_0<<",final="<<res_1<<", Time spent="<<elapsed_time<<" seconds"<<endl;
     } else {
-      cout<<"Timeslot: "<<tilex<<", Time spent="<<elapsed_time<<" minutes"<<endl;
+      cout<<"Timeslot: "<<tilex<<", Time spent="<<elapsed_time<<" seconds"<<endl;
     }
 
 #ifdef HAVE_CUDA
