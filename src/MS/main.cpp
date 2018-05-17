@@ -796,9 +796,9 @@ beam.p_ra0,beam.p_dec0,iodata.freq0,beam.sx,beam.sy,beam.time_utc,beam.Nelem,bea
     if (solver_mode==SM_OSLM_OSRLM_RLBFGS||solver_mode==SM_RLM_RLBFGS||solver_mode==SM_RTR_OSRLM_RLBFGS || solver_mode==SM_NSD_RLBFGS) { 
     cout<<"nu="<<mean_nu<<endl;
     }
-      cout<<"Timeslot: "<<tilex<<" Residual: initial="<<res_0<<",final="<<res_1<<", Time spent="<<elapsed_time<<" seconds"<<endl;
+      cout<<"Timeslot: "<<tilex<<" Residual:initial= "<<res_0<<",final= "<<res_1<<", Time spent= "<<elapsed_time<<" seconds"<<endl;
     } else {
-      cout<<"Timeslot: "<<tilex<<", Time spent="<<elapsed_time<<" seconds"<<endl;
+      cout<<"Timeslot: "<<tilex<<", Time spent= "<<elapsed_time<<" seconds"<<endl;
     }
 
 #ifdef HAVE_CUDA
