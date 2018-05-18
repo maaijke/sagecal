@@ -5,7 +5,7 @@ from glob import glob
 import os
 import pylab as pyl
 
-marker_size = 15 
+marker_size = 12 
 
 number_of_datasets = 5
 
@@ -18,8 +18,9 @@ def compute_median(some_file):
 
 CPU = 0
 GPU = 0
+path_to_B1 = "klok_resultaten/B1/"
 
-for filename in glob("klok_resultaten/B1/*.output"):
+for filename in glob(path_to_B1 + "*.output"):
     # We want a list with just two strings: the number of stations and the processing device.
     parsed_filename = os.path.basename(filename).split(".")[0].split("_")
     processing_unit = parsed_filename[1]
@@ -46,10 +47,10 @@ ymax = max([CPU_median_times.max(), GPU_median_times.max()])
 pyl.ylim(3e-1, 2 * ymax)
 
 pyl.xlabel("Number of stations", fontsize = marker_size)
-pyl.ylabel("Calibration time (s)", fontsize = marker_size)
+pyl.ylabel("Sky model conversion plus beam prediction time (s)", fontsize = marker_size)
 pyl.semilogy(CPU_stations, CPU_median_times, 'gv', ms= marker_size, label = "CPU version of Sagecal")
 pyl.semilogy(GPU_stations, GPU_median_times, 'ro', ms= marker_size, label = "GPU version of Sagecal")
 pyl.legend(loc = 2)
-pyl.title("Sagecal prediction times for varying number of stations", fontsize = int(marker_size))
+pyl.title("Sagecal sky model conversion plus beam prediction times for five numbers of stations", fontsize = int(marker_size))
 # pyl.show()
-pyl.savefig("Sagecal_prediction_times.png", bbox_inches = "tight")
+pyl.savefig(path_to_B1 + "Sagecal_sky_model_conversion_plus_beam_prediction_times.png", bbox_inches = "tight")
