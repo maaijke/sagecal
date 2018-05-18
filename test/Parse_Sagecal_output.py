@@ -19,7 +19,7 @@ def compute_median(some_file):
 CPU = 0
 GPU = 0
 
-for filename in glob("klok_resultaten/*.output"):
+for filename in glob("klok_resultaten/B1/*.output"):
     # We want a list with just two strings: the number of stations and the processing device.
     parsed_filename = os.path.basename(filename).split(".")[0].split("_")
     processing_unit = parsed_filename[1]
