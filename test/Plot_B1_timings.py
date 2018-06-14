@@ -5,7 +5,7 @@ from glob import glob
 import os
 import pylab as pyl
 
-marker_size = 12 
+marker_size = 10 
 
 number_of_datasets = 5
 
@@ -48,12 +48,12 @@ pyl.ylim(3e-1, 2 * ymax)
 
 pyl.xlabel("Number of stations", fontsize = marker_size)
 pyl.ylabel("Sky model conversion plus beam prediction time (s)", fontsize = marker_size)
-pyl.semilogy(CPU_stations, CPU_median_times, 'gv', ms= marker_size, label = "CPU version of Sagecal")
-pyl.semilogy(GPU_stations, GPU_median_times, 'ro', ms= marker_size, label = "GPU version of Sagecal")
+pyl.semilogy(CPU_stations, CPU_median_times, 'gv', ms= marker_size, label = "CPU version of SAGECal")
+pyl.semilogy(GPU_stations, GPU_median_times, 'ro', ms= marker_size, label = "GPU version of SAGECal")
 pyl.legend(loc = 2)
 # pyl.title("Sagecal sky model conversion plus beam prediction times for five numbers of stations", fontsize = int(marker_size))
 bbox_props = dict(boxstyle="round", fc="w", ec="0.5", alpha=0.9)
 pyl.text(60, 1.8, "LOFAR", ha="center", va="center", size=20, bbox=bbox_props)
 pyl.text(512, 40, "SKA", ha="center", va="center", size=20, bbox=bbox_props)
 # pyl.show()
-pyl.savefig(path_to_B1 + "Sagecal_sky_model_conversion_plus_beam_prediction_times.png", bbox_inches = "tight")
+pyl.savefig(path_to_B1 + "SAGECal_sky_model_conversion_plus_beam_prediction_times.pdf", bbox_inches = "tight")
