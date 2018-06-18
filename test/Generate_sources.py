@@ -11,7 +11,7 @@ import warnings
 
 number_of_parameters = 19
 number_of_digits_for_sources = 5
-number_of_sources = 10000
+number_of_sources = 50000
 try:
     assert number_of_sources < 10**number_of_digits_for_sources
 except AssertionError:
@@ -128,7 +128,7 @@ with warnings.catch_warnings():
 
 # sources_parameters.tofile("extended_source_list_using_tofile.txt", sep='\n')
 
-with open("extended_source_list_centered_on_NCP.txt", 'wb') as f:
+with open(str(number_of_sources)+"_sources_half_of_them_Gaussians_half_pointlike_centered_on_NCP.txt", 'wb') as f:
     f.write(b"##  From Generate_sources.py by Hanno Spreeuw.\n")
     f.write(b"##  Generates point sources at random positions with random brighnesses within some range.\n")
     f.write(b"##  this is an LSM text (hms/dms) file\n")
@@ -142,5 +142,5 @@ with open("extended_source_list_centered_on_NCP.txt", 'wb') as f:
 # Now write the cluster file
 # First add '1' and '1' to indicate the cluster id and chunk size.
 cluster_array = np.concatenate((np.array(['1', '1']), sources_parameters.name))
-with open("extended_source_list_centered_on_NCP.txt.cluster", 'wb') as f:
+with open(str(number_of_sources)+ "_sources_half_of_them_Gaussians_half_pointlike_centered_on_NCP.txt.cluster", 'wb') as f:
     np.savetxt(f, (cluster_array).reshape(1, cluster_array.shape[0]), fmt='%s', delimiter=' ')
