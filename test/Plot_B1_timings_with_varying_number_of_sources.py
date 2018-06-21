@@ -9,6 +9,7 @@ from pylab import cm
 
 marker_size = 10 
 
+# Reverse the order of the numbers of stations 
 numbers_of_stations = np.array([64, 128, 256, 384, 512]) 
 # numbers_of_stations = np.array([64, 128, 256, 384]) 
 numbers_of_sources = np.arange(1,6)*10000
@@ -35,19 +36,34 @@ for filename in glob(path_to_timings + "*.output"):
     processing_unit = parsed_filename[2]
     print("processing_unit = ", processing_unit)
     
+    median_time = compute_median(filename)  
+
     if processing_unit == "CPU":
-        CPU_median_times[numbers_of_stations_index, numbers_of_sources_index]  = compute_median(filename)
+        CPU_median_times[numbers_of_stations_index, numbers_of_sources_index]  = median_time
 
     elif processing_unit == "GPU":
-        GPU_median_times[numbers_of_stations_index, numbers_of_sources_index]  = compute_median(filename)
+        GPU_median_times[numbers_of_stations_index, numbers_of_sources_index]  = median_time
+        print("numbers_of_stations_index = ",numbers_of_stations_index," numbers_of_sources_index = ", numbers_of_sources_index, 
+              "  median time = ", median_time)
     else:
         print("Something went wrong, unexpected file name.")
-      
-fig = pyl.figure()
+
+# fig = pyl.figure()
+fig, axes = pyl.subplots(nrows=1, ncols=2)
+for ax in axes.flat:
 ax = fig.gca(projection='3d')
-X, Y = np.meshgrid(numbers_of_stations, numbers_of_sources)
-surf = ax.plot_surface(X, Y, GPU_median_times, cmap=cm.coolwarm, linewidth=0, antialiased=False)
-fig.colorbar(surf, shrink=0.5, aspect=5)
+ax.view_init(azim = -135)
+ax.set_xlabel("Number of stations")
+ax.set_xticklabels(numbers_of_stations)
+ax.set_ylabel("Number of sources (* 1e4)")
+ax.set_yticklabels(np.array(numbers_of_sources/10000, np.int32))
+ax.set_ylim([numbers_of_sources.min()/2, numbers_of_sources.max()*1.05])
+ax.set_zlabel("log10 processing time (s)")
+X, Y = np.meshgrid(numbers_of_stations, numbers_of_sources, indexing = "ij")
+log_median_times = np.log10(GPU_median_times)
+surf = ax.plot_surface(X, Y, log_median_times , cmap=cm.coolwarm, linewidth=0, antialiased=False, vmin = log_median_times.min(), vmax = log_median_times.max())
+fig.colorbar(surf)
+# pyl.savefig("SAGECal_sky_model_conversion_plus_beam_prediction_times_3D.pdf", bbox_inches = "tight")
 pyl.show()
 # xmax = max([CPU_stations.max(), GPU_stations.max()])
 # pyl.xlim(0, 1.15 * xmax)
