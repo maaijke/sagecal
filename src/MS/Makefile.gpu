@@ -10,8 +10,6 @@ LAPACK_DIR=/cm/shared/package/openblas/0.2.17mt/lib
 #LAPACK_DIR=/usr/lib/atlas/sse/
 
 CUDALIB=-lcuda -lcudart -lcublas -lcusolver -lcudadevrt
-# CULALIB=-lcublas -lcusolver -lcudadevrt
-
 # NVML
 NVML_LIB=-lnvidia-ml -L/cm/shared/package/cuda91/toolkit/9.1.85/lib64/stubs
 
@@ -21,7 +19,7 @@ LDFLAGS=-Wl,--rpath,/cm/shared/package/openblas/0.2.17mt/lib,${CASA_LIBDIR}
 
 # with multithread FFTW
 MY_LIBS=-lm -lradio -ldirac 
-INCLUDES=-I. -I../lib/Dirac/ -I../lib/Radio/ $(CASA_INCDIR) -I/usr/include 
+INCLUDES=-I. -I../lib/Dirac/ -I../lib/Radio/ $(CASA_INCDIR) -I/usr/include
 LIBPATH=-L$(LAPACK_DIR) -L$(CASA_LIBDIR) -L../lib/Dirac/ -L../lib/Radio/
 
 #### glib
