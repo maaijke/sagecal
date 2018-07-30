@@ -1,7 +1,8 @@
 CC=gcc
 CXX=g++
 NVCC=nvcc
-CFLAGS= -Wall -O3 -g -pg -DHAVE_CUDA -DHYBRID_CODE
+# Have gprof produce output with enough granularity.
+CFLAGS= -Wall -O3 -g -pg -fno-omit-frame-pointer -DHAVE_CUDA -DHYBRID_CODE
 CLIBS= -lm -lpthread
 LAPACK=-L/usr/local/OpenBLAS/lib/ -lopenblas -lgfortran -lpthread
 
