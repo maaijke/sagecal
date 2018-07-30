@@ -11,7 +11,10 @@ import warnings
 
 number_of_parameters = 19
 number_of_digits_for_sources = 5
-number_of_sources = 50000
+number_of_sources = 1000
+number_of_sources_per_cluster = 10
+number_of_clusters = int(number_of_sources/number_of_sources_per_cluster)
+
 try:
     assert number_of_sources < 10**number_of_digits_for_sources
 except AssertionError:
@@ -25,12 +28,12 @@ tol_seconds_of_decl = 3600 * 10
 tol_seconds_of_RA = tol_seconds_of_decl * 24/360
 
 # I'll pretend NCP is at RA=0, decl=90 for now, to accommodate for a MS that I am using.
-RA_hours_NCP = 0
-RA_minutes_NCP = 0
-RA_seconds_NCP = 0
-#RA_hours_NCP = 8
-#RA_minutes_NCP = 13
-#RA_seconds_NCP = 35.981540
+# RA_hours_NCP = 0
+# RA_minutes_NCP = 0
+# RA_seconds_NCP = 0
+RA_hours_NCP = 8
+RA_minutes_NCP = 13
+RA_seconds_NCP = 35.981540
 
 RA_seconds_NCP = (RA_hours_NCP * 60 + RA_minutes_NCP) *60 + RA_seconds_NCP
 
@@ -42,12 +45,12 @@ RA_seconds_high = RA_seconds_NCP + tol_seconds_of_RA
 RA_minutes_high, RA_seconds_high = divmod(RA_seconds_high, 60)
 RA_hours_high, RA_minutes_high = divmod(RA_minutes_high, 60)
 
-decl_degrees_NCP = 90
-decl_minutes_NCP = 0
-decl_seconds_NCP = 0
-#decl_degrees_NCP = 48
-#decl_minutes_NCP = 12
-#decl_seconds_NCP = 59.174770
+# decl_degrees_NCP = 90
+# decl_minutes_NCP = 0
+# decl_seconds_NCP = 0
+decl_degrees_NCP = 48
+decl_minutes_NCP = 12
+decl_seconds_NCP = 59.174770
 
 decl_seconds_NCP = (decl_degrees_NCP * 60 + decl_minutes_NCP) *60 + decl_seconds_NCP
 
@@ -128,7 +131,7 @@ with warnings.catch_warnings():
 
 # sources_parameters.tofile("extended_source_list_using_tofile.txt", sep='\n')
 
-with open(str(number_of_sources)+"_sources_half_of_them_Gaussians_half_pointlike_centered_on_NCP.txt", 'wb') as f:
+with open(str(number_of_sources)+"_sources_half_of_them_Gaussians_half_pointlike_centered_on_3C196.txt", 'wb') as f:
     f.write(b"##  From Generate_sources.py by Hanno Spreeuw.\n")
     f.write(b"##  Generates point sources at random positions with random brighnesses within some range.\n")
     f.write(b"##  this is an LSM text (hms/dms) file\n")
@@ -141,6 +144,12 @@ with open(str(number_of_sources)+"_sources_half_of_them_Gaussians_half_pointlike
 
 # Now write the cluster file
 # First add '1' and '1' to indicate the cluster id and chunk size.
-cluster_array = np.concatenate((np.array(['1', '1']), sources_parameters.name))
-with open(str(number_of_sources)+ "_sources_half_of_them_Gaussians_half_pointlike_centered_on_NCP.txt.cluster", 'wb') as f:
-    np.savetxt(f, (cluster_array).reshape(1, cluster_array.shape[0]), fmt='%s', delimiter=' ')
+# cluster_array = np.concatenate((np.array(['1', '1']), sources_parameters.name))
+# Trying to construct multiple clusters.
+
+clusters_and_ones = np.column_stack((np.arange(1, number_of_clusters + 1), np.ones(number_of_clusters, np.str)))
+cluster_array = np.column_stack((clusters_and_ones, sources_parameters.name.reshape(number_of_clusters, number_of_sources_per_cluster)))
+
+with open(str(number_of_sources)+ "_sources_half_of_them_Gaussians_half_pointlike_centered_on_3C196_with_" + str(number_of_clusters) + "_clusters.txt.cluster", 'wb') as f:
+    # np.savetxt(f, (cluster_array).reshape(1, cluster_array.shape[0]), fmt='%s', delimiter=' ')
+    np.savetxt(f, cluster_array, fmt='%s', delimiter=' ')
