@@ -14,7 +14,8 @@ CUDALIB=-lcuda -lcudart -lcublas -lcusolver -lcudadevrt
 # CULALIB=-lcublas -lcusolver -lcudadevrt
 
 # NVML
-NVML_LIB=-lnvidia-ml -L/cm/shared/package/cuda91/toolkit/9.1.85/lib64/stubs
+# NVML_LIB=-lnvidia-ml -L/cm/shared/package/cuda91/toolkit/9.1.85/lib64/stubs
+NVML_LIB=-lnvidia-ml -L/cm/shared/package/cuda92/toolkit/9.2.88/lib64/stubs
 
 LDFLAGS=-Wl,--rpath,/cm/shared/package/openblas/0.2.17mt/lib,${CASA_LIBDIR}
 #LDFLAGS=-Wl,-t,--rpath,/software/users/lofareor/SW/lib64
