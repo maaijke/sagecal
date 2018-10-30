@@ -78,7 +78,7 @@ for counter in range(1,3):
 cbar_ax = fig.add_axes([0.9, 0.15, 0.03, 0.7])
 fig.colorbar(surf, cax=cbar_ax)
 # fig.colorbar(surf)
-pyl.savefig("SAGECal_sky_model_conversion_plus_beam_prediction_times_3D.png")
+pyl.savefig("SAGECal_sky_model_conversion_plus_beam_prediction_times_3D_dpi_600.png", dpi = 600)
 # pyl.show()
 # xmax = max([CPU_stations.max(), GPU_stations.max()])
 # pyl.xlim(0, 1.15 * xmax)
