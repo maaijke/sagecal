@@ -3,20 +3,35 @@ services:
   - docker
 language: cpp
 
-#env:
+matrix:
+  fast_finish: true
+  include:
+    - os: linux
+    - os: osx
 
 before_install:
-  - docker pull fdiblen/ubuntu1604-test:latest
-  - docker run -itd -v "${TRAVIS_BUILD_DIR}:/travis/workdir" --name ubuntu-build fdiblen/ubuntu1604-test:latest
-  - docker pull fdiblen/sl7-test:latest
-  - docker run -itd -v "${TRAVIS_BUILD_DIR}:/travis/workdir" --name sl-build fdiblen/sl7-test:latest
-#  - docker pull base/archlinux
-#  - docker run -itd -v "${TRAVIS_BUILD_DIR}:/travis/workdir" --name arch-build base/archlinux
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew update ;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      docker pull fdiblen/ubuntu1604-test:latest ;
+      docker run -itd -v "${TRAVIS_BUILD_DIR}:/travis/workdir" --name ubuntu-build fdiblen/ubuntu1604-test:latest ;
+      docker pull fdiblen/sl7-test:latest ;
+      docker run -itd -v "${TRAVIS_BUILD_DIR}:/travis/workdir" --name sl-build fdiblen/sl7-test:latest ;
+    fi
 
 script:
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
-  - docker exec -e BRANCH=$BRANCH -e IMAGE='ubuntu' ubuntu-build /bin/bash -c "/travis/workdir/build-tests/compile_sagecal.sh"
-  - docker exec -e BRANCH=$BRANCH -e IMAGE='sl7' sl-build /bin/bash -c "/travis/workdir/build-tests/compile_sagecal.sh"
-#  - docker exec --env BRANCH=$BRANCH arch-build /bin/bash -c "/travis/workdir/build-tests/arch/prepare-arch.sh"
-#  - docker exec --env BRANCH=$BRANCH arch-build /bin/bash -c "/travis/workdir/build-tests/arch/compile-arch.sh"
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      uname -a ;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      docker exec -e BRANCH=$BRANCH -e IMAGE='ubuntu' ubuntu-build /bin/bash -c "/travis/workdir/build-tests/compile_sagecal.sh"
+      docker exec -e BRANCH=$BRANCH -e IMAGE='sl7' sl-build /bin/bash -c "/travis/workdir/build-tests/compile_sagecal.sh"
+    fi
+
+after_success:
+  -|
+  echo "Build finished."
+  ls -la
